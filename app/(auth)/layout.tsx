@@ -1,15 +1,14 @@
 import type { Metadata, Viewport } from "next";
 import { Roboto } from "next/font/google";
-import "./globals.css";
+import "../globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
-import { AppSidebar } from "@/components/app-sidebar";
 
 const roboto = Roboto({
   weight: "400",
   subsets: ["latin"],
 });
 export const metadata: Metadata = {
-  title: "UI-AI | Genera componentes UI con IA",
+  title: "Iniciar sesión en UI-AI | Genera componentes UI con IA",
   description:
     "Describe tu proyecto y deja que la IA genere componentes UI personalizados para tu marca",
 };
@@ -18,7 +17,7 @@ export const viewport: Viewport = {
   themeColor: "#1a1a2e",
 };
 
-export default function RootLayout({
+export default function AuthLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -33,7 +32,6 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <main className="flex h-screen bg-background overflow-hidden">
-            <AppSidebar />
             {children}
           </main>
         </ThemeProvider>
