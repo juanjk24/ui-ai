@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Roboto } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
-import { AppSidebar } from "@/components/app-sidebar";
+import { Toaster } from "sonner";
 
 const roboto = Roboto({
   weight: "400",
@@ -28,15 +28,15 @@ export default function RootLayout({
       <body className={`${roboto.className} font-sans antialiased`}>
         <ThemeProvider
           attribute="class"
-          defaultTheme="system"
+          defaultTheme="dark"
           enableSystem
           disableTransitionOnChange
         >
           <main className="flex h-screen bg-background overflow-hidden">
-            <AppSidebar />
             {children}
           </main>
         </ThemeProvider>
+        <Toaster />
       </body>
     </html>
   );

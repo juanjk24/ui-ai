@@ -1,20 +1,18 @@
-"use client"
-import { usePathname } from "next/navigation"
 import { 
   LayoutDashboard, 
   Plus, 
   FolderOpen, 
   Settings, 
   Sparkles,
-  LogOut,
   ChevronRight
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Separator } from "@/components/ui/separator"
 import Link from "next/link"
 import { ScrollArea, ScrollBar } from "./ui/scroll-area"
+import { UserInfo } from "./user-info"
+import { createClient } from "@/supabase/server"
 
 const recentProjects = [
   { id: "1", name: "E-commerce App", color: "bg-blue-500" },
@@ -25,9 +23,13 @@ const recentProjects = [
   { id: "6", name: "Blog Platform", color: "bg-indigo-500" },
 ]
 
-export function AppSidebar() {
-  const pathname = usePathname();
-  if (pathname === "/login" || pathname === "/") return null;
+export async function AppSidebar() {
+  const supabase = await createClient();
+  const { data: { user }, error } = await supabase.auth.getUser();
+
+  if (error || !user) {
+    return null;
+  }
 
   return (
     <aside className="w-64 bg-sidebar border-r border-sidebar-border flex flex-col h-screen">
@@ -44,7 +46,7 @@ export function AppSidebar() {
       {/* Navigation */}
       <nav className="flex-1 flex flex-col p-3 space-y-1 min-h-0">
         <div className="shrink-0 space-y-1">
-          <Link href="/dashboard" passHref>
+          <Link href="/" passHref>
             <Button
               variant="ghost"
               className="w-full justify-start gap-3 text-sidebar-foreground"
@@ -112,17 +114,13 @@ export function AppSidebar() {
           </Button>
         </Link>
 
-        <div className="flex items-center gap-3 p-2 rounded-lg hover:bg-sidebar-accent transition-colors cursor-pointer">
-          <Avatar className="w-8 h-8">
-            <AvatarImage src="https://github.com/shadcn.png" />
-            <AvatarFallback>US</AvatarFallback>
-          </Avatar>
-          <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium text-sidebar-foreground truncate">Usuario</p>
-            <p className="text-xs text-muted-foreground truncate">usuario@email.com</p>
-          </div>
-          <LogOut className="w-4 h-4 text-muted-foreground" />
-        </div>
+        <UserInfo 
+          user={{
+            name: user.user_metadata?.full_name || user.user_metadata?.name || user.email || 'Usuario',
+            email: user.email || user.user_metadata?.email || '',
+            avatar_url: user.user_metadata?.avatar_url || user.user_metadata?.picture,
+          }} 
+        />
       </div>
     </aside>
   )
