@@ -2,6 +2,7 @@ import Image from "next/image";
 import SocialButton from "./social-button";
 import { createClient } from "@/supabase/client";
 import { toast } from "sonner";
+import { Github } from "lucide-react";
 
 type Provider = "google" | "github";
 type ProviderType = {
@@ -21,7 +22,7 @@ const providers: ProviderType[] = [
     {
         name: "github",
         label: "Iniciar sesión con GitHub",
-        icon: "/icons/github.svg",
+        icon: "lucide",
         size: 24
     }
 ];
@@ -44,7 +45,11 @@ export default function SocialAuthButtons() {
         <div className="flex flex-col gap-3">
             {providers.map((provider) => (
                 <SocialButton key={provider.name} action={() => handleLogin(provider.name)}>
-                    <Image src={provider.icon} className="w-6 h-6" alt={provider.label} width={provider.size} height={provider.size} />
+                    {provider.icon === "lucide" && provider.name === "github" ? (
+                        <Github className="w-6 h-6" />
+                    ) : (
+                        <Image src={provider.icon} className="w-4.5 h-4.5" alt={provider.label} width={provider.size} height={provider.size} />
+                    )}
                     {provider.label}
                 </SocialButton>
             ))}

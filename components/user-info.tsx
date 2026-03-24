@@ -36,7 +36,7 @@ export function UserInfo({ user }: { user: UserInfoProps }) {
 
   return (
     <div className="flex items-center gap-3 p-2 rounded-lg hover:bg-sidebar-accent transition-colors">
-      <Link href="/settings?tab=profile">
+      <Link href="/settings">
         <Avatar className="w-8 h-8">
           <AvatarImage src={user.avatar_url} />
           <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
